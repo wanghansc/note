@@ -9,15 +9,10 @@ import java.util.List;
  * @description TODO
  * @date 2021/1/12 10:14
  **/
-@Entity
-@Table(name = "t_type")
 public class Type {
-    @Id
-    @GeneratedValue
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "type")
     private List<Blog> blogs = new ArrayList<>();
 
     public Type() {

@@ -10,11 +10,8 @@ import java.util.List;
  * @description TODO
  * @date 2021/1/12 10:13
  **/
-@Entity
-@Table(name = "t_blog")
 public class Blog {
-    @Id
-    @GeneratedValue
+
     private Long id;
     private String title;
     private String firstPicture;
@@ -25,21 +22,15 @@ public class Blog {
     private boolean commentable;
     private boolean published;
     private boolean recommend;
-    @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
-    @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
 
-    @ManyToOne
     private Type type;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST})
     private List<Tag> tags = new ArrayList<>();
 
-    @ManyToOne
     private User user;
 
-    @OneToMany(mappedBy = "blog")
     private List<Comment> comments = new ArrayList<>();
 
     public Blog() {

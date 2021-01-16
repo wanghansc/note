@@ -1,5 +1,7 @@
 package com.wh.searchall.pojo;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,11 +12,7 @@ import java.util.List;
  * @description TODO
  * @date 2021/1/12 10:14
  **/
-@Entity
-@Table(name = "t_user")
 public class User {
-    @Id
-    @GeneratedValue
     private Long id;
     private String nickname;
     private String username;
@@ -22,12 +20,9 @@ public class User {
     private String email;
     private String avatar;
     private Integer type;
-    @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
-    @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
 
-    @OneToMany(mappedBy = "user")
     private List<Blog> blogs = new ArrayList<>();
 
     public User() {
