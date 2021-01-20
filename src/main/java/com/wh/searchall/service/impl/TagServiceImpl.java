@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -52,5 +54,22 @@ public class TagServiceImpl implements TagService {
     @Override
     public int deleteTag(Long id) {
         return tagDao.deleteTag(id);
+    }
+
+    @Override
+    public List<Tag> listTag(String tagIds) {
+        return tagDao.findAll(convertToList(tagIds));
+    }
+
+    private List<Long> convertToList(String tagIds) {
+        List<Long> list = new ArrayList<>();
+        if (null!=tagIds&&!"".equals(tagIds.trim())) {
+            String[] array = tagIds.split(",");
+//            list = Arrays.asList(array);
+            for (int i=0; i < array.length;i++) {
+                list.add(new Long(array[i]));
+            }
+        }
+        return list;
     }
 }

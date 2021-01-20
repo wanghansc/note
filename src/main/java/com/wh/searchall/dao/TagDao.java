@@ -23,4 +23,6 @@ public interface TagDao {
     int updateTag(Tag tag);
 
     int deleteTag(Long id);
+
+    List<Tag> findAll(List<Long> list);
 }

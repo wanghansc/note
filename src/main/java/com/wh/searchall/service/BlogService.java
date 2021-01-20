@@ -14,4 +14,10 @@ public interface BlogService {
     List<Blog> getAllBlog();
 
     List<Blog> listBlog(BlogQuery blog);
+
+    Blog getBlog(Long id);
+
+    int saveBlog(Blog blog);
+
+    int updateBlog(Blog blog);
 }

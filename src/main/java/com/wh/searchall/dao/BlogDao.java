@@ -18,11 +18,15 @@ public interface BlogDao {
 
     List<Blog> listBlog(BlogQuery blog);
 
-//    int saveBlog(Blog blog);
-//
+    Blog getById(Long id);
+
+    int saveBlog(Blog blog);
+
+    int updateBlog(Blog blog);
+
+    int saveBlogAndTag(BlogAndTag blogAndTag);
+
 //    int saveBlogAndTag(BlogAndTag blogAndTag);
-//
-//    int updateBlog(Blog blog);
 //
 //    int deleteBlog(Long id);
 

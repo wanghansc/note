@@ -32,6 +32,8 @@ public class Blog {
     private boolean recommend;
     private Date createTime;
     private Date updateTime;
+    private String tagIds;
+    private String description;
 
     private Type type;
 
@@ -41,11 +43,36 @@ public class Blog {
 
     private List<Comment> comments = new ArrayList<>();
 
+
+    public void init() {
+        this.tagIds = tagsToIds(this.getTags());
+    }
+
+    //1,2,3
+    private String tagsToIds(List<Tag> tags) {
+        if (!tags.isEmpty()) {
+            StringBuffer ids = new StringBuffer();
+            boolean flag = false;
+            for (Tag tag : tags) {
+                if (flag) {
+                    ids.append(",");
+                } else {
+                    flag = true;
+                }
+                ids.append(tag.getId());
+            }
+            return ids.toString();
+        } else {
+            return tagIds;
+        }
+    }
+
     @Override
     public String toString() {
         return "Blog{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
+                ", content=****'" + '\'' +
                 ", firstPicture='" + firstPicture + '\'' +
                 ", flag='" + flag + '\'' +
                 ", views=" + views +
@@ -56,6 +83,10 @@ public class Blog {
                 ", recommend=" + recommend +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
+                ", tagIds='" + tagIds + '\'' +
+                ", description='" + description + '\'' +
+                ", type=" + type +
+                ", user=" + user +
                 '}';
     }
 }

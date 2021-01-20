@@ -27,4 +27,11 @@
         delete from t_tag where id = #{id}
     </delete>
 
+    <select id="findAll" parameterType="list" resultType="com.wh.searchall.pojo.Tag">
+        select * from t_tag where id in
+        <foreach collection="list" item="tagId" open="(" close=")" separator=",">
+                #{tagId}
+        </foreach>
+    </select>
+
 </mapper> 
