@@ -39,6 +39,7 @@ public class BlogServiceImpl implements BlogService {
     @Transactional
     @Override
     public int saveBlog(Blog blog) {
+        blog.setViews(10);
         int i = blogDao.saveBlog(blog);
         Long id = blog.getId();
         List<Tag> tags = blog.getTags();
@@ -56,6 +57,26 @@ public class BlogServiceImpl implements BlogService {
     @Transactional
     @Override
     public int updateBlog(Blog blog) {
-        return blogDao.updateBlog(blog);
+        int i = blogDao.updateBlog(blog);
+        List<Tag> tags = blog.getTags();
+        Long id = blog.getId();
+        BlogAndTag blogAndTag = null;
+        //先删除
+        blogDao.deleteTag(blog);
+        for (Tag tag : tags) {
+            //新增时无法获取自增的id,在mybatis里修改
+            blogAndTag = new BlogAndTag(tag.getId(), id);
+            i += blogDao.saveBlogAndTag(blogAndTag);
+
+        }
+
+        return i;
+    }
+
+    @Override
+    public int deleteById(Blog blog) {
+        int i =  blogDao.deleteBlog(blog.getId());
+        i+=blogDao.deleteTag(blog);
+        return i;
     }
 }

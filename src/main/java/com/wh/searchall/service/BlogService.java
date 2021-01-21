@@ -20,4 +20,6 @@ public interface BlogService {
     int saveBlog(Blog blog);
 
     int updateBlog(Blog blog);
+
+    int deleteById(Blog blog);
 }

@@ -9,7 +9,9 @@ import com.wh.searchall.service.TagService;
 import com.wh.searchall.service.TypeService;
 import com.wh.searchall.utils.BlogQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -77,6 +79,19 @@ public class BlogController {
         blog.init();
         model.addAttribute("blog",blog);
         return INPUT;
+    }
+
+    @GetMapping("/blogs/{id}/delete")
+    public String editDelete(@PathVariable Long id,RedirectAttributes attributes) {
+        Blog blog = new Blog();
+        blog.setId(id);
+        int b = blogService.deleteById(blog);
+        if (b == 0 ) {
+            attributes.addFlashAttribute("message", "操作失败");
+        } else {
+            attributes.addFlashAttribute("message", "操作成功");
+        }
+        return REDIRECT_LIST;
     }
 
     @PostMapping("/blogs")
