@@ -30,4 +30,11 @@ public interface BlogDao {
 
     int deleteBlog(Long id);
 
+    List<Blog> getIndexBlog();
+
+    List<Blog> getAllRecommendBlog();
+
+    Blog getDetailedBlog(Long id);
+
+    int updateViews(Long id);
 }

@@ -70,4 +70,32 @@
         delete from t_blog where id = #{id}
     </delete>
 
+    <select id="getIndexBlog" resultType="com.wh.searchall.pojo.Blog">
+        select b.id, b.title, b.first_picture, b.views, b.update_time, b.description,
+               t.name `type.name`, t.id `type.id`,
+               u.nickname `user.nickname`, u.avatar `user.avatar`, u.id `user.id`
+        from t_blog b, t_type t, t_user u
+        where b.type_id = t.id and  u.id = b.user_id and published = true order by b.update_time desc
+    </select>
+
+    <select id="getAllRecommendBlog" resultType="com.wh.searchall.pojo.Blog">
+        select id, title, recommend from t_blog where published = true and recommend = true order by update_time desc;
+    </select>
+
+    <select id="getDetailedBlog" resultType="com.wh.searchall.pojo.Blog">
+        select b.id, b.first_picture, b.flag, b.title, b.content, b.views,
+               b.update_time,b.commentable, b.share_statement, b.appreciation, b.tag_ids,
+               u.nickname `user.nickname`, u.avatar `user.avatar`,u.id `user.id`,
+               t.name `type.name`, t.id `type.id`
+        from t_blog b, t_user u, t_type t
+        where b.user_id = u.id and b.type_id = t.id and  b.id = #{id}
+    </select>
+
+    <update id="updateViews" parameterType="long">
+        update t_blog
+        set views = views + 1
+        where id = #{id};
+
+    </update>
+
 </mapper> 

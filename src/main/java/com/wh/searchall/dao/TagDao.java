@@ -25,4 +25,7 @@ public interface TagDao {
     int deleteTag(Long id);
 
     List<Tag> findAll(List<Long> list);
+
+    List<Tag> getBlogTag();
+
 }

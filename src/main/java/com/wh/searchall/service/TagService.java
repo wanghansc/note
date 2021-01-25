@@ -24,4 +24,6 @@ public interface TagService {
     int deleteTag(Long id);
 
     List<Tag> listTag(String tagIds);
+
+    List<Tag> getBlogTag();
 }

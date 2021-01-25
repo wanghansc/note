@@ -22,4 +22,10 @@ public interface BlogService {
     int updateBlog(Blog blog);
 
     int deleteById(Blog blog);
+
+    List<Blog> getIndexBlog();
+
+    List<Blog> getAllRecommendBlog();
+
+    Blog getDetailedBlog(Long id);
 }

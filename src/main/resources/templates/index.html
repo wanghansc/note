@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head >
+<head th:replace="_fragments :: head(~{::title})">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>首页</title>
@@ -10,7 +10,7 @@
 <body>
 <!--导航-->
 <!--segment片段 inverted反转-->
-<nav class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+<nav th:replace="_fragments :: menu(0)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
     <div class="ui container">
         <div class="ui inverted secondary stackable menu">
             <h2 class="ui teal header item">SearchAll</h2>
@@ -20,7 +20,7 @@
             <a href="#" class="m-item item m-mobile-hide"><i class="mini clone icon" style="margin-right: 2em;margin-bottom: 4px"></i>归档</a>
             <a href="#" class="m-item item m-mobile-hide"><i class="mini info icon" style="margin-right: 2em;margin-bottom: 4px"></i>关于我</a>
             <div class="right m-item m-mobile-hide item">
-<!--                transparent透明，inverted 反转-->
+                <!--                transparent透明，inverted 反转-->
                 <div class="ui icon inverted transparent input">
                     <input type="text" placeholder="Search...">
                     <i class="search link icon"></i>
@@ -35,7 +35,7 @@
 
 <!--中间-->
 <div class="m-container m-padded-tb-big">
-<!--左右布局-->
+    <!--左右布局-->
     <div class="ui container"><!--最适尺寸调整-->
         <div class="ui stackable grid">
             <!--左边的文章列表-->
@@ -47,428 +47,444 @@
                             <h3 class="ui teal header">笔记文章</h3>
                         </div>
                         <div class="right aligned column">
-                            共<h2 class="ui orange header m-inline-block m-text-thin"> 14 </h2>篇
+                            共<h2 class="ui orange header m-inline-block m-text-thin" th:text="${pageInfo.total}"> 14 </h2>篇
                         </div>
                     </div>
                 </div>
+
                 <!--content-->
                 <div class="ui attached  segment">
-                    <div class="ui m-padded-lr vertical segment  m-padded-tb-large">
-                        <!--手机端适应 图在上，mobile reversed-->
-                        <div class="ui mobile reversed stackable grid">
-                            <div class="eleven wide column">
-                                <h3 class="ui header">MyBatis源码解析</h3>
-                                <p class="m-text">主要分析MyBatis框架如何解析xml配置文件，以及mapper映射相关。具体做法是跟随源码，一句句debug分析，其中涉及的代理模式会做主要分析。</p>
-                                <div class="ui grid">
+                            <div class="ui padded vertical segment  m-padded-tb-large" th:each="blog : ${pageInfo.list}">
+                                <!--手机端适应 图在上，mobile reversed-->
+                                <div class="ui middle aligned mobile reversed stackable grid">
                                     <div class="eleven wide column">
-                                        <!--作者浏览-->
-                                        <div class="ui mini horizontal link list">
-                                            <div class="item">
-                                                <img src="https://picsum.photos/id/103/100/100" alt="" class="ui avatar image">
-                                                <div class="content"><a href="#" class="header">王瀚</a></div>
+                                        <h3 class="ui header"><a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" class="m-black" th:text="${blog.title}">MyBatis源码解析</a></h3>
+                                        <p class="m-text" th:text="|${blog.description}......|">主要分析MyBatis框架如何解析xml配置文件，以及mapper映射相关。具体做法是跟随源码，一句句debug分析，其中涉及的代理模式会做主要分析。</p>
+                                        <div class="ui grid">
+                                            <div class="eleven wide column">
+                                                <!--作者浏览-->
+                                                <div class="ui mini horizontal link list">
+                                                    <div class="item">
+                                                        <img src="https://picsum.photos/id/103/100/100" th:src="@{${blog.user.avatar}}" alt="" class="ui avatar image">
+                                                        <div class="content"><a href="#" class="header" th:text="${blog.user.nickname}">王瀚</a></div>
+                                                    </div>
+                                                    <div class="item">
+                                                        <i class="calendar icon"></i><span th:text="${#dates.format(blog.updateTime, 'yyyy-MM-dd')}">2021-1-6</span>
+                                                    </div>
+                                                    <div class="item">
+                                                        <i class="eye icon"></i><span th:text="${blog.views}">2314</span>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="item">
-                                                <i class="calendar icon"></i>2021-1-6
-                                            </div>
-                                            <div class="item">
-                                                <i class="eye icon"></i>2314
+                                            <div class="right aligned five wide column">
+                                                <a href="#" th:href="@{/types/{id}(id=${blog.type.id})}" target="_blank" class="ui teal basic label m-padded-mini m-text-thin" th:text="${blog.type.name}">认知升级</a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="right aligned five wide column">
-                                        <a href="#" target="_blank" class="ui teal basic label m-padded-mini m-text-thin">认知升级</a>
+                                    <div class="five wide column">
+                                        <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank">
+                                            <img src="https://picsum.photos/id/1/800/450" th:src="@{${blog.firstPicture}}" class="ui rounded image" alt="">
+                                        </a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="five wide column">
-                                <a href="#" target="_blank">
-                                    <img src="https://picsum.photos/id/1/800/450" class="ui rounded image" alt="">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui m-padded-lr vertical segment m-padded-tb-large">
-                        <div class="ui mobile reversed stackable grid">
-                            <div class="eleven wide column">
-                                <h3 class="ui header">MyBatis源码解析</h3>
-                                <p class="m-text">主要分析MyBatis框架如何解析xml配置文件，以及mapper映射相关。具体做法是跟随源码，一句句debug分析，其中涉及的代理模式会做主要分析。</p>
-                                <div class="ui grid">
+                                    <!--/*-->
+                            <div class="ui m-padded-lr vertical segment m-padded-tb-large">
+                                <div class="ui mobile reversed stackable grid">
                                     <div class="eleven wide column">
-                                        <div class="ui mini horizontal link list">
-                                            <div class="item">
-                                                <img src="https://picsum.photos/id/103/100/100" alt="" class="ui avatar image">
-                                                <div class="content"><a href="#" class="header">王瀚</a></div>
+                                        <h3 class="ui header">MyBatis源码解析</h3>
+                                        <p class="m-text">主要分析MyBatis框架如何解析xml配置文件，以及mapper映射相关。具体做法是跟随源码，一句句debug分析，其中涉及的代理模式会做主要分析。</p>
+                                        <div class="ui grid">
+                                            <div class="eleven wide column">
+                                                <div class="ui mini horizontal link list">
+                                                    <div class="item">
+                                                        <img src="https://picsum.photos/id/103/100/100" alt="" class="ui avatar image">
+                                                        <div class="content"><a href="#" class="header">王瀚</a></div>
+                                                    </div>
+                                                    <div class="item">
+                                                        <i class="calendar icon"></i>2021-1-6
+                                                    </div>
+                                                    <div class="item">
+                                                        <i class="eye icon"></i>2314
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="item">
-                                                <i class="calendar icon"></i>2021-1-6
-                                            </div>
-                                            <div class="item">
-                                                <i class="eye icon"></i>2314
+                                            <div class="right aligned five wide column">
+                                                <a href="#" target="_blank" class="ui teal basic label m-padded-mini m-text-thin">认知升级</a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="right aligned five wide column">
-                                        <a href="#" target="_blank" class="ui teal basic label m-padded-mini m-text-thin">认知升级</a>
+                                    <div class="five wide column">
+                                        <a href="#" target="_blank">
+                                            <img src="https://picsum.photos/id/7/800/450" class="ui rounded image" alt="">
+                                        </a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="five wide column">
-                                <a href="#" target="_blank">
-                                    <img src="https://picsum.photos/id/7/800/450" class="ui rounded image" alt="">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui m-padded-lr vertical segment m-padded-tb-large">
-                        <div class="ui mobile reversed stackable grid">
-                            <div class="eleven wide column">
-                                <h3 class="ui header">MyBatis源码解析</h3>
-                                <p class="m-text">主要分析MyBatis框架如何解析xml配置文件，以及mapper映射相关。具体做法是跟随源码，一句句debug分析，其中涉及的代理模式会做主要分析。</p>
-                                <div class="ui grid">
+                            <div class="ui m-padded-lr vertical segment m-padded-tb-large">
+                                <div class="ui mobile reversed stackable grid">
                                     <div class="eleven wide column">
-                                        <div class="ui mini horizontal link list">
-                                            <div class="item">
-                                                <img src="https://picsum.photos/id/103/100/100" alt="" class="ui avatar image">
-                                                <div class="content"><a href="#" class="header">王瀚</a></div>
+                                        <h3 class="ui header">MyBatis源码解析</h3>
+                                        <p class="m-text">主要分析MyBatis框架如何解析xml配置文件，以及mapper映射相关。具体做法是跟随源码，一句句debug分析，其中涉及的代理模式会做主要分析。</p>
+                                        <div class="ui grid">
+                                            <div class="eleven wide column">
+                                                <div class="ui mini horizontal link list">
+                                                    <div class="item">
+                                                        <img src="https://picsum.photos/id/103/100/100" alt="" class="ui avatar image">
+                                                        <div class="content"><a href="#" class="header">王瀚</a></div>
+                                                    </div>
+                                                    <div class="item">
+                                                        <i class="calendar icon"></i>2021-1-6
+                                                    </div>
+                                                    <div class="item">
+                                                        <i class="eye icon"></i>2314
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="item">
-                                                <i class="calendar icon"></i>2021-1-6
-                                            </div>
-                                            <div class="item">
-                                                <i class="eye icon"></i>2314
+                                            <div class="right aligned five wide column">
+                                                <a href="#" target="_blank" class="ui teal basic label m-padded-mini m-text-thin">认知升级</a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="right aligned five wide column">
-                                        <a href="#" target="_blank" class="ui teal basic label m-padded-mini m-text-thin">认知升级</a>
+                                    <div class="five wide column">
+                                        <a href="#" target="_blank">
+                                            <img src="https://picsum.photos/id/111/800/450" class="ui rounded image" alt="">
+                                        </a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="five wide column">
-                                <a href="#" target="_blank">
-                                    <img src="https://picsum.photos/id/111/800/450" class="ui rounded image" alt="">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui m-padded-lr vertical segment m-padded-tb-large">
-                        <div class="ui mobile reversed stackable grid">
-                            <div class="eleven wide column">
-                                <h3 class="ui header">MyBatis源码解析</h3>
-                                <p class="m-text">主要分析MyBatis框架如何解析xml配置文件，以及mapper映射相关。具体做法是跟随源码，一句句debug分析，其中涉及的代理模式会做主要分析。</p>
-                                <div class="ui grid">
+                            <div class="ui m-padded-lr vertical segment m-padded-tb-large">
+                                <div class="ui mobile reversed stackable grid">
                                     <div class="eleven wide column">
-                                        <div class="ui mini horizontal link list">
-                                            <div class="item">
-                                                <img src="https://picsum.photos/id/103/100/100" alt="" class="ui avatar image">
-                                                <div class="content"><a href="#" class="header">王瀚</a></div>
+                                        <h3 class="ui header">MyBatis源码解析</h3>
+                                        <p class="m-text">主要分析MyBatis框架如何解析xml配置文件，以及mapper映射相关。具体做法是跟随源码，一句句debug分析，其中涉及的代理模式会做主要分析。</p>
+                                        <div class="ui grid">
+                                            <div class="eleven wide column">
+                                                <div class="ui mini horizontal link list">
+                                                    <div class="item">
+                                                        <img src="https://picsum.photos/id/103/100/100" alt="" class="ui avatar image">
+                                                        <div class="content"><a href="#" class="header">王瀚</a></div>
+                                                    </div>
+                                                    <div class="item">
+                                                        <i class="calendar icon"></i>2021-1-6
+                                                    </div>
+                                                    <div class="item">
+                                                        <i class="eye icon"></i>2314
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="item">
-                                                <i class="calendar icon"></i>2021-1-6
-                                            </div>
-                                            <div class="item">
-                                                <i class="eye icon"></i>2314
+                                            <div class="right aligned five wide column">
+                                                <a href="#" target="_blank" class="ui teal basic label m-padded-mini m-text-thin">认知升级</a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="right aligned five wide column">
-                                        <a href="#" target="_blank" class="ui teal basic label m-padded-mini m-text-thin">认知升级</a>
+                                    <div class="five wide column">
+                                        <a href="#" target="_blank">
+                                            <img src="https://picsum.photos/id/101/800/450" class="ui rounded image" alt="">
+                                        </a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="five wide column">
-                                <a href="#" target="_blank">
-                                    <img src="https://picsum.photos/id/101/800/450" class="ui rounded image" alt="">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui m-padded-lr vertical segment m-padded-tb-large">
-                        <div class="ui mobile reversed stackable grid">
-                            <div class="eleven wide column">
-                                <h3 class="ui header">MyBatis源码解析</h3>
-                                <p class="m-text">主要分析MyBatis框架如何解析xml配置文件，以及mapper映射相关。具体做法是跟随源码，一句句debug分析，其中涉及的代理模式会做主要分析。</p>
-                                <div class="ui grid">
+                            <div class="ui m-padded-lr vertical segment m-padded-tb-large">
+                                <div class="ui mobile reversed stackable grid">
                                     <div class="eleven wide column">
-                                        <div class="ui mini horizontal link list">
-                                            <div class="item">
-                                                <img src="https://picsum.photos/id/103/100/100" alt="" class="ui avatar image">
-                                                <div class="content"><a href="#" class="header">王瀚</a></div>
+                                        <h3 class="ui header">MyBatis源码解析</h3>
+                                        <p class="m-text">主要分析MyBatis框架如何解析xml配置文件，以及mapper映射相关。具体做法是跟随源码，一句句debug分析，其中涉及的代理模式会做主要分析。</p>
+                                        <div class="ui grid">
+                                            <div class="eleven wide column">
+                                                <div class="ui mini horizontal link list">
+                                                    <div class="item">
+                                                        <img src="https://picsum.photos/id/103/100/100" alt="" class="ui avatar image">
+                                                        <div class="content"><a href="#" class="header">王瀚</a></div>
+                                                    </div>
+                                                    <div class="item">
+                                                        <i class="calendar icon"></i>2021-1-6
+                                                    </div>
+                                                    <div class="item">
+                                                        <i class="eye icon"></i>2314
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="item">
-                                                <i class="calendar icon"></i>2021-1-6
-                                            </div>
-                                            <div class="item">
-                                                <i class="eye icon"></i>2314
+                                            <div class="right aligned five wide column">
+                                                <a href="#" target="_blank" class="ui teal basic label m-padded-mini m-text-thin">认知升级</a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="right aligned five wide column">
-                                        <a href="#" target="_blank" class="ui teal basic label m-padded-mini m-text-thin">认知升级</a>
+                                    <div class="five wide column">
+                                        <a href="#" target="_blank">
+                                            <img src="https://picsum.photos/id/10/800/450" class="ui rounded image" alt="">
+                                        </a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="five wide column">
-                                <a href="#" target="_blank">
-                                    <img src="https://picsum.photos/id/10/800/450" class="ui rounded image" alt="">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui m-padded-lr vertical segment m-padded-tb-large">
-                        <div class="ui mobile reversed stackable grid">
-                            <div class="eleven wide column">
-                                <h3 class="ui header">MyBatis源码解析</h3>
-                                <p class="m-text">主要分析MyBatis框架如何解析xml配置文件，以及mapper映射相关。具体做法是跟随源码，一句句debug分析，其中涉及的代理模式会做主要分析。</p>
-                                <div class="ui grid">
+                            <div class="ui m-padded-lr vertical segment m-padded-tb-large">
+                                <div class="ui mobile reversed stackable grid">
                                     <div class="eleven wide column">
-                                        <div class="ui mini horizontal link list">
-                                            <div class="item">
-                                                <img src="https://picsum.photos/id/103/100/100" alt="" class="ui avatar image">
-                                                <div class="content"><a href="#" class="header">王瀚</a></div>
+                                        <h3 class="ui header">MyBatis源码解析</h3>
+                                        <p class="m-text">主要分析MyBatis框架如何解析xml配置文件，以及mapper映射相关。具体做法是跟随源码，一句句debug分析，其中涉及的代理模式会做主要分析。</p>
+                                        <div class="ui grid">
+                                            <div class="eleven wide column">
+                                                <div class="ui mini horizontal link list">
+                                                    <div class="item">
+                                                        <img src="https://picsum.photos/id/103/100/100" alt="" class="ui avatar image">
+                                                        <div class="content"><a href="#" class="header">王瀚</a></div>
+                                                    </div>
+                                                    <div class="item">
+                                                        <i class="calendar icon"></i>2021-1-6
+                                                    </div>
+                                                    <div class="item">
+                                                        <i class="eye icon"></i>2314
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="item">
-                                                <i class="calendar icon"></i>2021-1-6
-                                            </div>
-                                            <div class="item">
-                                                <i class="eye icon"></i>2314
+                                            <div class="right aligned five wide column">
+                                                <a href="#" target="_blank" class="ui teal basic label m-padded-mini m-text-thin">认知升级</a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="right aligned five wide column">
-                                        <a href="#" target="_blank" class="ui teal basic label m-padded-mini m-text-thin">认知升级</a>
+                                    <div class="five wide column">
+                                        <a href="#" target="_blank">
+                                            <img src="https://picsum.photos/id/10/800/450" class="ui rounded image" alt="">
+                                        </a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="five wide column">
-                                <a href="#" target="_blank">
-                                    <img src="https://picsum.photos/id/10/800/450" class="ui rounded image" alt="">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui m-padded-lr vertical segment m-padded-tb-large">
-                        <div class="ui mobile reversed stackable grid">
-                            <div class="eleven wide column">
-                                <h3 class="ui header">MyBatis源码解析</h3>
-                                <p class="m-text">主要分析MyBatis框架如何解析xml配置文件，以及mapper映射相关。具体做法是跟随源码，一句句debug分析，其中涉及的代理模式会做主要分析。</p>
-                                <div class="ui grid">
+                            <div class="ui m-padded-lr vertical segment m-padded-tb-large">
+                                <div class="ui mobile reversed stackable grid">
                                     <div class="eleven wide column">
-                                        <div class="ui mini horizontal link list">
-                                            <div class="item">
-                                                <img src="https://picsum.photos/id/103/100/100" alt="" class="ui avatar image">
-                                                <div class="content"><a href="#" class="header">王瀚</a></div>
+                                        <h3 class="ui header">MyBatis源码解析</h3>
+                                        <p class="m-text">主要分析MyBatis框架如何解析xml配置文件，以及mapper映射相关。具体做法是跟随源码，一句句debug分析，其中涉及的代理模式会做主要分析。</p>
+                                        <div class="ui grid">
+                                            <div class="eleven wide column">
+                                                <div class="ui mini horizontal link list">
+                                                    <div class="item">
+                                                        <img src="https://picsum.photos/id/103/100/100" alt="" class="ui avatar image">
+                                                        <div class="content"><a href="#" class="header">王瀚</a></div>
+                                                    </div>
+                                                    <div class="item">
+                                                        <i class="calendar icon"></i>2021-1-6
+                                                    </div>
+                                                    <div class="item">
+                                                        <i class="eye icon"></i>2314
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="item">
-                                                <i class="calendar icon"></i>2021-1-6
-                                            </div>
-                                            <div class="item">
-                                                <i class="eye icon"></i>2314
+                                            <div class="right aligned five wide column">
+                                                <a href="#" target="_blank" class="ui teal basic label m-padded-mini m-text-thin">认知升级</a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="right aligned five wide column">
-                                        <a href="#" target="_blank" class="ui teal basic label m-padded-mini m-text-thin">认知升级</a>
+                                    <div class="five wide column">
+                                        <a href="#" target="_blank">
+                                            <img src="https://picsum.photos/id/10/800/450" class="ui rounded image" alt="">
+                                        </a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="five wide column">
-                                <a href="#" target="_blank">
-                                    <img src="https://picsum.photos/id/10/800/450" class="ui rounded image" alt="">
-                                </a>
+                                    <!--*/-->
+                        </div>
+                        <!--footer-->
+                        <div class="ui bottom attached segment">
+                            <div class="ui middle aligned two column grid">
+                                <div class="column">
+                                    <!--basic 颜色在背部 mini再小一点-->
+                                    <a href="#" class="ui mini teal basic button" th:href="@{/(pageNum=${pageInfo.hasPreviousPage}?${pageInfo.prePage}:1)}">上一页</a>
+                                </div>
+                                <div class="right aligned column">
+                                    <a href="#" class="ui mini teal basic button" th:href="@{/(pageNum=${pageInfo.hasNextPage}?${pageInfo.nextPage}:${pageInfo.pages})}">下一页</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <!--footer-->
-                <div class="ui bottom attached segment">
-                    <div class="ui middle aligned two column grid">
-                        <div class="column">
-                            <!--basic 颜色在背部 mini再小一点-->
-                            <a href="#" class="ui mini teal basic button">上一页</a>
-                        </div>
-                        <div class="right aligned column">
-                            <a href="#" class="ui mini teal basic button">下一页</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--右边的top-->
-            <div class="five wide column">
-                <!--分类-->
-                <div class="ui segments">
-                    <div class="ui secondary segment">
-                        <div class="ui two column grid">
-                            <div class="column">
-                                <i class="idea icon"></i>分类
-                            </div>
-                            <div class="right aligned column">
-                                <a href="#" target="_blank">more <i class="angle double right icon"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui teal segment">
-                        <div class="ui fluid vertical menu">
-                            <a href="#" class="item">
-                                学习日志
-                                <div class="ui teal basic left pointing label">13</div>
-                            </a>
-                            <a href="#" class="item">
-                                学习日志
-                                <div class="ui teal basic left pointing label">13</div>
-                            </a>
-                            <a href="#" class="item">
-                                学习日志
-                                <div class="ui teal basic left pointing label">13</div>
-                            </a>
-                            <a href="#" class="item">
-                                学习日志
-                                <div class="ui teal basic left pointing label">13</div>
-                            </a>
-                            <a href="#" class="item">
-                                学习日志
-                                <div class="ui teal basic left pointing label">13</div>
-                            </a>
-                            <a href="#" class="item">
-                                学习日志
-                                <div class="ui teal basic left pointing label">13</div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <!--标签-->
-                <div class="ui segments m-margin-top-large">
-                    <div class="ui secondary segment">
-                        <div class="ui two column grid">
-                            <div class="column">
-                                <i class="tags icon"></i>标签
-                            </div>
-                            <div class="right aligned column">
-                                <a href="#" target="_blank">more<i class="angle double right icon"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui teal segment">
-                        <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">
-                            方法论<div class="detail">13</div>
-                        </a>
-                        <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">
-                            方<div class="detail">13</div>
-                        </a>
-                        <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">
-                            方论<div class="detail">13</div>
-                        </a>
-                        <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">
-                            方法论<div class="detail">13</div>
-                        </a>
-                        <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">
-                            方法论<div class="detail">13</div>
-                        </a>
-                        <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">
-                            方法论<div class="detail">13</div>
-                        </a>
-                        <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">
-                            方法论<div class="detail">13</div>
-                        </a>
-                        <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">
-                            方法论<div class="detail">13</div>
-                        </a>
-                        <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">
-                            方法论<div class="detail">13</div>
-                        </a>
-                        <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">
-                            方法论<div class="detail">13</div>
-                        </a>
-                    </div>
-                </div>
-                <!--最新推荐-->
-                <div class="ui segments m-margin-top-large">
-                    <div class="ui secondary segment">
-                        <i class="bookmark icon"></i>最新推荐
-                    </div>
-                    <div class="ui segment">
-                        <a href="#" target="_blank" class="m-black m-text-thin">用户故事（User Story）</a>
-                    </div>
-                    <div class="ui segment">
-                        <a href="#" target="_blank" class="m-black m-text-thin">用户故事（User Story）</a>
-                    </div>
-                    <div class="ui segment">
-                        <a href="#" target="_blank" class="m-black m-text-thin">用户故事（User Story）</a>
-                    </div>
-                    <div class="ui segment">
-                        <a href="#" target="_blank" class="m-black m-text-thin">用户故事（User Story）</a>
-                    </div>
-                    <div class="ui segment">
-                        <a href="#" target="_blank" class="m-black m-text-thin">用户故事（User Story）</a>
-                    </div>
-                    <div class="ui segment">
-                        <a href="#" target="_blank" class="m-black m-text-thin">用户故事（User Story）</a>
-                    </div>
-                    <div class="ui segment">
-                        <a href="#" target="_blank" class="m-black m-text-thin">用户故事（User Story）</a>
-                    </div>
-                    <div class="ui segment">
-                        <a href="#" target="_blank" class="m-black m-text-thin">用户故事（User Story）</a>
-                    </div>
-                </div>
 
-                <!--二维码-->
-                <h4 class="ui horizontal divider header m-margin-top-large">扫码关注</h4>
-                <div class="ui centered card" style="width: 11em">
-                    <img src="../static/images/WeChat.jpg" th:src="@{/images/WeChat.jpg}"  alt=""  class="ui rounded image" >
+                        <div class="ui segment m-inline-block">
+                            <p >当前第<span th:text="${pageInfo.pageNum}"></span>页，总<span th:text="${pageInfo.pages}"></span>页，共<span th:text="${pageInfo.total}"></span>条记录</p>
+                        </div>
+
+                    </div>
+                    <!--右边的top-->
+                    <div class="five wide column">
+                        <!--分类-->
+                        <div class="ui segments">
+                            <div class="ui secondary segment">
+                                <div class="ui two column grid">
+                                    <div class="column">
+                                        <i class="idea icon"></i>分类
+                                    </div>
+                                    <div class="right aligned column">
+                                        <a href="#" th:href="@{types/-1}" target="_blank">more <i class="angle double right icon"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui teal segment">
+                                <div class="ui fluid vertical menu">
+                                    <a href="#" th:href="@{/types/{id}(id=${type.id})}" target="_blank" class="item" th:each="type : ${types}">
+                                        <span th:text="${type.name}">学习日志</span>
+                                        <div class="ui teal basic left pointing label" th:text="${#arrays.length(type.blogs)}">13</div>
+                                    </a>
+                                    <!--/*-->
+                                    <a href="#" class="item">
+                                        学习日志
+                                        <div class="ui teal basic left pointing label">13</div>
+                                    </a>
+                                    <a href="#" class="item">
+                                        学习日志
+                                        <div class="ui teal basic left pointing label">13</div>
+                                    </a>
+                                    <a href="#" class="item">
+                                        学习日志
+                                        <div class="ui teal basic left pointing label">13</div>
+                                    </a>
+                                    <a href="#" class="item">
+                                        学习日志
+                                        <div class="ui teal basic left pointing label">13</div>
+                                    </a>
+                                    <a href="#" class="item">
+                                        学习日志
+                                        <div class="ui teal basic left pointing label">13</div>
+                                    </a>
+                                    <!--*/-->
+                                </div>
+                            </div>
+                        </div>
+                        <!--标签-->
+                        <div class="ui segments m-margin-top-large">
+                            <div class="ui secondary segment">
+                                <div class="ui two column grid">
+                                    <div class="column">
+                                        <i class="tags icon"></i>标签
+                                    </div>
+                                    <div class="right aligned column">
+                                        <a href="#" target="_blank" th:href="@{tags/-1}">more<i class="angle double right icon"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui teal segment">
+                                <a href="#" th:href="@{/tags/{id}(id=${tag.id})}" target="_blank" th:each="tag : ${tags}" class="ui teal basic left pointing label m-margin-tb-tiny">
+                                    <span th:text="${tag.name}">方法论</span><div class="detail" th:text="${#arrays.length(tag.blogs)}">13</div>
+                                </a>
+                                <!--/*-->
+                                <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">
+                                    方<div class="detail">13</div>
+                                </a>
+                                <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">
+                                    方论<div class="detail">13</div>
+                                </a>
+                                <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">
+                                    方法论<div class="detail">13</div>
+                                </a>
+                                <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">
+                                    方法论<div class="detail">13</div>
+                                </a>
+                                <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">
+                                    方法论<div class="detail">13</div>
+                                </a>
+                                <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">
+                                    方法论<div class="detail">13</div>
+                                </a>
+                                <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">
+                                    方法论<div class="detail">13</div>
+                                </a>
+                                <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">
+                                    方法论<div class="detail">13</div>
+                                </a>
+                                <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">
+                                    方法论<div class="detail">13</div>
+                                </a>
+                                <!--*/-->
+                            </div>
+                        </div>
+                        <!--最新推荐-->
+                        <div class="ui segments m-margin-top-large">
+                            <div class="ui secondary segment">
+                                <i class="bookmark icon"></i>最新推荐
+                            </div>
+                            <div class="ui segment" th:each="recommendBlog : ${recommendBlogs}">
+                                <a href="#" th:href="@{/blog/{id}(id=${recommendBlog.id})}" th:text="${recommendBlog.title}" target="_blank" class="m-black m-text-thin">用户故事（User Story）</a>
+                            </div>
+                            <!--/*-->
+                            <div class="ui segment">
+                                <a href="#" target="_blank" class="m-black m-text-thin">用户故事（User Story）</a>
+                            </div>
+                            <div class="ui segment">
+                                <a href="#" target="_blank" class="m-black m-text-thin">用户故事（User Story）</a>
+                            </div>
+                            <div class="ui segment">
+                                <a href="#" target="_blank" class="m-black m-text-thin">用户故事（User Story）</a>
+                            </div>
+                            <div class="ui segment">
+                                <a href="#" target="_blank" class="m-black m-text-thin">用户故事（User Story）</a>
+                            </div>
+                            <div class="ui segment">
+                                <a href="#" target="_blank" class="m-black m-text-thin">用户故事（User Story）</a>
+                            </div>
+                            <div class="ui segment">
+                                <a href="#" target="_blank" class="m-black m-text-thin">用户故事（User Story）</a>
+                            </div>
+                            <div class="ui segment">
+                                <a href="#" target="_blank" class="m-black m-text-thin">用户故事（User Story）</a>
+                            </div>
+                            <!--*/-->
+                        </div>
+
+                        <!--二维码-->
+                        <h4 class="ui horizontal divider header m-margin-top-large">扫码关注</h4>
+                        <div class="ui centered card" style="width: 11em">
+                            <img src="../static/images/WeChat.jpg" th:src="@{/images/WeChat.jpg}"  alt=""  class="ui rounded image" >
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
-    </div>
 
-</div>
-
-<br>
-<br>
+        <br>
+        <br>
 
 
-<!--底部footer-->
-<footer class="ui inverted vertical segment m-padded-tb-massive" >
-    <div class="ui center aligned container">
-        <div class="ui inverted divided stackable grid">
-            <div class="three wide column">
-                <div class="ui inverted link list">
-                    <div class="item">
-                        <img src="../static/images/WeChat.jpg" th:src="@{/images/WeChat.jpg}" class="ui rounded image" style="width: 110px" alt="">
+        <!--底部footer-->
+        <footer th:replace="_fragments :: footer" class="ui inverted vertical segment m-padded-tb-massive" >
+            <div class="ui center aligned container">
+                <div class="ui inverted divided stackable grid">
+                    <div class="three wide column">
+                        <div class="ui inverted link list">
+                            <div class="item">
+                                <img src="../static/images/WeChat.jpg" th:src="@{/images/WeChat.jpg}" class="ui rounded image" style="width: 110px" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="three wide column">
+                        <h4 class="ui inverted header m-text-thin m-text-spaced">最新文章</h4>
+                        <div class="ui inverted link list">
+                            <a href="#" class="item">用户故事（User Story）</a>
+                            <a href="#" class="item">用户故事（User Story）</a>
+                            <a href="#" class="item">用户故事（User Story）</a>
+                        </div>
+                    </div>
+                    <div class="three wide column">
+                        <h4 class="ui inverted header m-text-thin m-text-spaced">联系我</h4>
+                        <div class="ui inverted link list">
+                            <a href="#" class="item">E-mail: 1561675255@qq.com</a>
+                            <a href="#" class="item">QQ: 1561675255</a>
+                        </div>
+                    </div>
+                    <div class="seven wide column">
+                        <h4 class="ui inverted header m-text-thin m-text-spaced">介绍</h4>
+                        <p class="m-text-thin m-text-spaced m-opacity-mini">这是我的个人知识库管理平台，上面有我平时学习的笔记，以及相关的文本，支持全文搜索，也会分享关于编程、写作、思考的任何内容，希望可以给来到这里的人一些帮助...</p>
                     </div>
                 </div>
+                <div class="ui inverted section divider"></div>
+                <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2021 - 2022 Wanghan Designed by Wanghan!</p>
             </div>
-            <div class="three wide column">
-                <h4 class="ui inverted header m-text-thin m-text-spaced">最新文章</h4>
-                <div class="ui inverted link list">
-                    <a href="#" class="item">用户故事（User Story）</a>
-                    <a href="#" class="item">用户故事（User Story）</a>
-                    <a href="#" class="item">用户故事（User Story）</a>
-                </div>
-            </div>
-            <div class="three wide column">
-                <h4 class="ui inverted header m-text-thin m-text-spaced">联系我</h4>
-                <div class="ui inverted link list">
-                    <a href="#" class="item">E-mail: 1561675255@qq.com</a>
-                    <a href="#" class="item">QQ: 1561675255</a>
-                </div>
-            </div>
-            <div class="seven wide column">
-                <h4 class="ui inverted header m-text-thin m-text-spaced">介绍</h4>
-                <p class="m-text-thin m-text-spaced m-opacity-mini">这是我的个人知识库管理平台，上面有我平时学习的笔记，以及相关的文本，支持全文搜索，也会分享关于编程、写作、思考的任何内容，希望可以给来到这里的人一些帮助...</p>
-            </div>
-        </div>
-        <div class="ui inverted section divider"></div>
-        <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2021 - 2022 Wanghan Designed by Wanghan!</p>
-    </div>
-</footer>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
-    <script>
-        $('.menu.toggle').click(function (){
-            //显示
-            $('.m-item').toggleClass('m-mobile-hide');
-        });
-    </script>
+        </footer>
+        <!--/*/<th:block th:replace="admin/_fragments::script">/*/-->
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+        <!--/*/</th:block>/*/-->
+        <script>
+            $('.menu.toggle').click(function (){
+                //显示
+                $('.m-item').toggleClass('m-mobile-hide');
+            });
+        </script>
 </body>
 </html>

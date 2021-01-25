@@ -1,15 +1,20 @@
 package com.wh.searchall.service.impl;
 
+import com.wh.searchall.NotFoundException;
 import com.wh.searchall.dao.BlogDao;
+import com.wh.searchall.dao.TagDao;
 import com.wh.searchall.pojo.Blog;
 import com.wh.searchall.pojo.BlogAndTag;
 import com.wh.searchall.pojo.Tag;
 import com.wh.searchall.service.BlogService;
+import com.wh.searchall.service.TagService;
 import com.wh.searchall.utils.BlogQuery;
+import com.wh.searchall.utils.MarkdownUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,6 +26,10 @@ import java.util.List;
 public class BlogServiceImpl implements BlogService {
     @Autowired
     private BlogDao blogDao;
+//    @Autowired
+//    private TagDao tagDao;
+    @Autowired
+    private TagService tagService;
     @Override
     public List<Blog> getAllBlog() {
         return blogDao.getAllBlog();
@@ -78,5 +87,35 @@ public class BlogServiceImpl implements BlogService {
         int i =  blogDao.deleteBlog(blog.getId());
         i+=blogDao.deleteTag(blog);
         return i;
+    }
+
+    //首页
+
+    @Override
+    public List<Blog> getIndexBlog() {
+        return blogDao.getIndexBlog();
+    }
+
+    @Override
+    public List<Blog> getAllRecommendBlog() {
+        return blogDao.getAllRecommendBlog();
+    }
+
+    @Transactional
+    @Override
+    public Blog getDetailedBlog(Long id) {
+        Blog detailedBlog = blogDao.getDetailedBlog(id);
+        if (null == detailedBlog) {
+            throw new NotFoundException("该博客不存在");
+        } else {
+            if (null != detailedBlog.getTagIds()) {
+                List<Tag> tags = tagService.listTag(detailedBlog.getTagIds());
+                detailedBlog.setTags(tags);
+            }
+            blogDao.updateViews(id);
+        }
+        String content = detailedBlog.getContent();
+        detailedBlog.setContent(MarkdownUtils.markdownToHtmlExtensions(content));
+        return detailedBlog;
     }
 }

@@ -72,4 +72,9 @@ public class TagServiceImpl implements TagService {
         }
         return list;
     }
+
+    @Override
+    public List<Tag> getBlogTag() {
+        return tagDao.getBlogTag();
+    }
 }
