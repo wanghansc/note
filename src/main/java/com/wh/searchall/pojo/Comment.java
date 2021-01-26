@@ -23,8 +23,10 @@ public class Comment {
     private String content;
     private String avatar;
     private Date createTime;
-
-    private Blog blog;
+    private boolean adminComment;
+    private Long parentCommentId;
+    private String parentNickname;
+    private Long blogId;
 
     private List<Comment> replyComments = new ArrayList<>();
 
