@@ -28,4 +28,8 @@ public interface BlogService {
     List<Blog> getAllRecommendBlog();
 
     Blog getDetailedBlog(Long id);
+
+    List<Blog> getByTagId(Long tagId);
+
+    List<Blog> getByTypeId(Long typeId);
 }

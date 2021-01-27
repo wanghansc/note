@@ -98,4 +98,48 @@
 
     </update>
 
+    <select id="getByTagId" resultMap="tagsBlog">
+        select b.id, b.title, b.first_picture, b.views, b.update_time, b.description,b.tag_ids,
+               t.name `type.name`, t.id `type.id`,
+               t1.name `tag.name`, t1.id `tag.id`,
+               u.nickname `user.nickname`, u.avatar `user.avatar`, u.id `user.id`
+        from t_blog b, t_type t, t_user u, t_blog_tags tb, t_tag t1
+        where b.type_id = t.id and u.id = b.user_id and tb.blogs_id = b.id and tb.tags_id = t1.id and published = true and t1.id = #{tagId}
+        order by b.update_time desc
+    </select>
+    <resultMap id="tagsBlog" type="com.wh.searchall.pojo.Blog">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="flag" column="flag"/>
+        <result property="views" column="views"/>
+        <result property="tagIds" column="tag_ids"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="firstPicture" column="first_picture"/>
+        <result property="shareStatement" column="share_statement"/>
+        <result property="description" column="description"/>
+        <association property="type" javaType="com.wh.searchall.pojo.Type">
+            <id property="id" column="type.id"/>
+            <result property="name" column="type.name"/>
+        </association>
+        <association property="user" javaType="com.wh.searchall.pojo.User">
+            <id property="id" column="user.id"/>
+            <result property="nickname" column="user.nickname"/>
+            <result property="avatar" column="user.avatar"/>
+        </association>
+        <collection property="tags" ofType="com.wh.searchall.pojo.Tag">
+            <id property="id" column="tag.id"/>
+            <result property="name" column="tag.name"/>
+        </collection>
+    </resultMap>
+
+    <select id="getByTypeId" resultMap="tagsBlog">
+        select b.id, b.title, b.first_picture, b.views, b.update_time, b.description,
+               t.name `type.name`, t.id `type.id`,
+               u.nickname `user.nickname`, u.avatar `user.avatar`, u.id `user.id`
+        from t_blog b, t_type t, t_user u
+        where b.type_id = t.id and u.id = b.user_id and published = true and t.id = #{typeId}
+        order by b.update_time desc
+    </select>
+
 </mapper> 

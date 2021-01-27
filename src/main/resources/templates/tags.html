@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>标签</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
-    <link rel="stylesheet" href="../static/css/my.css">
+    <link rel="stylesheet" href="../static/css/typo.css" th:href="@{/css/typo.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="../static/lib/prism/prism.css" th:href="@{/lib/prism/prism.css}">
+    <link rel="stylesheet" href="../static/lib/tocbot/tocbot.css" th:href="@{/lib/tocbot/tocbot.css}">
+    <link rel="stylesheet" href="../static/css/my.css" th:href="@{/css/my.css}">
 </head>
 <body>
 <!--导航-->
@@ -48,15 +52,16 @@
                     <h3 class="ui teal header">标签</h3>
                 </div>
                 <div class="right aligned column">
-                    共<h2 class="ui orange header m-inline-block m-text-thin"> 14 </h2>个
+                    共<h2 class="ui orange header m-inline-block m-text-thin" th:text="${#arrays.length(tags)}"> 14 </h2>个
                 </div>
             </div>
         </div>
         <!--label-->
         <div class="ui attached segment m-padded-tb-large">
-            <a href="#" target="_blank" class="ui teal basic left pointing large label m-margin-tb-tiny">
-                方法论 <div class="detail">23</div>
+            <a href="#" th:href="@{/tags/{id}(id=${tag.id})}" class="ui basic left pointing large label m-margin-tb-tiny" th:classappend="${tag.id==activeTagId} ? 'teal'" th:each="tag : ${tags}">
+                <span th:text="${tag.name}">方法论</span> <div class="detail" th:text="${#arrays.length(tag.blogs)}">23</div>
             </a>
+            <!--/*-->
             <a href="#" target="_blank" class="ui basic left pointing large label m-margin-tb-tiny">
                 方法论 <div class="detail">22</div>
             </a>
@@ -84,44 +89,57 @@
             <a href="#" target="_blank" class="ui basic left pointing large label m-margin-tb-tiny">
                 方法论 <div class="detail">22</div>
             </a>
+            <!--*/-->
         </div>
         <!--doc-->
         <div class="ui top attached teal segment ">
             <!--文章-->
-            <div class="ui m-padded-lr vertical segment  m-padded-tb-large m-mobile-lr-clear">
+            <div class="ui m-padded-lr vertical segment  m-padded-tb-large m-mobile-lr-clear" th:each="blog : ${pageInfo.list}">
                 <div class="ui mobile reversed stackable grid">
                     <div class="eleven wide column">
-                        <h3 class="ui header">MyBatis源码解析</h3>
-                        <p class="m-text">主要分析MyBatis框架如何解析xml配置文件，以及mapper映射相关。具体做法是跟随源码，一句句debug分析，其中涉及的代理模式会做主要分析。</p>
+                        <h3 class="ui header"><a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" class="m-black" th:text="${blog.title}">MyBatis框架</a></h3>
+                        <p class="m-text" th:text="|${blog.description}......|">主要分析MyBatis框架如何解析xml配置文件，以及mapper映射相关。具体做法是跟随源码，一句句debug分析，其中涉及的代理模式会做主要分析。</p>
                         <div class="ui stackable grid">
-                            <div class="eleven wide column">
-                                <!--作者浏览-->
-                                <div class="ui mini horizontal link list">
-                                    <div class="item">
-                                        <img src="https://picsum.photos/id/103/100/100" alt="" class="ui avatar image">
-                                        <div class="content"><a href="#" class="header">王瀚</a></div>
-                                    </div>
-                                    <div class="item">
-                                        <i class="calendar icon"></i>2021-1-6
-                                    </div>
-                                    <div class="item">
-                                        <i class="eye icon"></i>2314
+                            <div class="row">
+                                <div class="eleven wide column">
+                                    <!--作者浏览-->
+                                    <div class="ui mini horizontal link list">
+                                        <div class="item">
+                                            <img src="https://picsum.photos/id/103/100/100" th:src="@{${blog.user.avatar}}" alt="" class="ui avatar image">
+                                            <div class="content"><a href="#" class="header" th:text="${blog.user.nickname}">王瀚</a></div>
+                                        </div>
+                                        <div class="item">
+                                            <i class="calendar icon"></i><span th:text="${#dates.format(blog.updateTime, 'yyyy-MM-dd')}">2021-1-6</span>
+                                        </div>
+                                        <div class="item">
+                                            <i class="eye icon"></i><span th:text="${blog.views}">3456</span>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="right aligned five wide column">
+                                    <a href="#" target="_blank" class="ui teal basic label m-padded-mini m-text-thin" th:text="${blog.type.name}">认知升级</a>
+                                </div>
                             </div>
-                            <div class="right aligned five wide column">
-                                <a href="#" target="_blank" class="ui teal basic label m-padded-mini m-text-thin">认知升级</a>
+                            <div class="row">
+                                <div class="column">
+                                    <a href="#" th:href="@{/tags/{id}(id=${tag.id})}" class="ui basic teal left pointing label m-padded-mini m-text-thin" th:each="tag : ${blog.tags}" th:text="${tag.name}">蹦蹦蹦</a>
+                                </div>
                             </div>
                         </div>
+
+
                     </div>
                     <div class="five wide column">
-                        <a href="#" target="_blank">
-                            <img src="https://picsum.photos/id/1/800/450" class="ui rounded image" alt="">
+                        <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank">
+                            <img src="https://picsum.photos/id/1/800/450" th:src="@{${blog.firstPicture}}" class="ui rounded image" alt="">
                         </a>
                     </div>
-                </div>
-            </div>
 
+                </div>
+
+
+            </div>
+            <!--/*-->
             <div class="ui m-padded-lr vertical segment m-padded-tb-large m-mobile-lr-clear">
                 <div class="ui mobile reversed stackable grid">
                     <div class="eleven wide column">
@@ -221,20 +239,25 @@
                             <img src="https://picsum.photos/id/1/800/450" class="ui rounded image" alt="">
                         </a>
                     </div>
+                </div>
+            </div>
+            <!--*/-->
+        </div>
+
+        <!--分页-->
+        <div class="ui bottom attached segment" >
+            <div class="ui middle aligned two column grid">
+                <div class="column">
+                    <div class="item"><a class="ui mini teal basic button" th:href="@{/(pageNum=${pageInfo.hasPreviousPage}?${pageInfo.prePage}:1)}">上一页</a></div>
+                </div>
+                <div class="right aligned column">
+                    <div class="item"><a class="ui mini teal basic button" th:href="@{/(pageNum=${pageInfo.hasNextPage}?${pageInfo.nextPage}:${pageInfo.pages})}">下一页</a></div>
                 </div>
             </div>
         </div>
 
-        <!--分页-->
-        <div class="ui bottom attached segment">
-            <div class="ui middle aligned two column grid">
-                <div class="column">
-                    <a href="#" class="ui mini teal basic button">上一页</a>
-                </div>
-                <div class="column right aligned">
-                    <a href="#" class="ui mini teal basic button">上一页</a>
-                </div>
-            </div>
+        <div class="ui segment m-inline-block">
+            <p >当前第<span th:text="${pageInfo.pageNum}"></span>页，总<span th:text="${pageInfo.pages}"></span>页，共<span th:text="${pageInfo.total}"></span>条记录</p>
         </div>
     </div>
 </div>

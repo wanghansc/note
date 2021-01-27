@@ -118,4 +118,19 @@ public class BlogServiceImpl implements BlogService {
         detailedBlog.setContent(MarkdownUtils.markdownToHtmlExtensions(content));
         return detailedBlog;
     }
+
+    @Override
+    public List<Blog> getByTagId(Long tagId) {
+        List<Blog> byTagId = blogDao.getByTagId(tagId);
+        for (Blog blog : byTagId) {
+            List<Tag> tags = tagService.listTag(blog.getTagIds());
+            blog.setTags(tags);
+        }
+        return byTagId;
+    }
+
+    @Override
+    public List<Blog> getByTypeId(Long typeId) {
+        return blogDao.getByTypeId(typeId);
+    }
 }

@@ -37,4 +37,8 @@ public interface BlogDao {
     Blog getDetailedBlog(Long id);
 
     int updateViews(Long id);
+
+    List<Blog> getByTagId(Long tagId);
+
+    List<Blog> getByTypeId(Long typeId);
 }
