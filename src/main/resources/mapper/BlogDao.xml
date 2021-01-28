@@ -142,4 +142,14 @@
         order by b.update_time desc
     </select>
 
+    <select id="findGroupYear" resultType="java.lang.String">
+        select DATE_FORMAT(b.update_time, '%Y') from t_blog b order by b.update_time desc
+    </select>
+
+    <select id="findByYear" resultType="com.wh.searchall.pojo.Blog">
+        select b.title, b.update_time, b.id, b.flag
+        from t_blog b
+        where DATE_FORMAT(b.update_time, "%Y") = #{year}
+    </select>
+
 </mapper> 

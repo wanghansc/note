@@ -4,6 +4,7 @@ import com.wh.searchall.pojo.Blog;
 import com.wh.searchall.utils.BlogQuery;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wanghan
@@ -32,4 +33,8 @@ public interface BlogService {
     List<Blog> getByTagId(Long tagId);
 
     List<Blog> getByTypeId(Long typeId);
+
+    Map<String,List<Blog>> archiveBlog();
+
+    int countBlog();
 }

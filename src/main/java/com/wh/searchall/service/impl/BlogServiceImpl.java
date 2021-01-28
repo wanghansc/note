@@ -14,8 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author wanghan
@@ -132,5 +131,21 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public List<Blog> getByTypeId(Long typeId) {
         return blogDao.getByTypeId(typeId);
+    }
+
+    @Override
+    public Map<String, List<Blog>> archiveBlog() {
+        List<String> years = blogDao.findGroupYear();
+        Set<String> set = new HashSet<>(years);  //set去掉重复的年份
+        Map<String, List<Blog>> map = new HashMap<>();
+        for (String year : set) {
+            map.put(year, blogDao.findByYear(year));
+        }
+        return map;
+    }
+
+    @Override
+    public int countBlog() {
+        return blogDao.getAllBlog().size();
     }
 }

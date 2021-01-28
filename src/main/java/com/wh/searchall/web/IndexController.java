@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -77,5 +78,16 @@ public class IndexController {
 //        System.out.println(blog.getContent());
         model.addAttribute("blog", blog);
         return "blog";
+    }
+
+    @GetMapping("/footer/newblog")
+    public String newblogs(Model model) {
+        List<Blog> allRecommendBlog = blogService.getAllRecommendBlog();
+        List<Blog> list = new ArrayList<>();
+        list.add(allRecommendBlog.get(0));
+        list.add(allRecommendBlog.get(1));
+        list.add(allRecommendBlog.get(2));
+        model.addAttribute("newblogs", list);
+        return "_fragments :: newblogList";
     }
 }
