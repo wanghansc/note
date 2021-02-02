@@ -2,6 +2,7 @@ package com.wh.searchall.service;
 
 import com.wh.searchall.pojo.Blog;
 import com.wh.searchall.utils.BlogQuery;
+import com.wh.searchall.utils.SearchItem;
 
 import java.util.List;
 import java.util.Map;
@@ -37,4 +38,6 @@ public interface BlogService {
     Map<String,List<Blog>> archiveBlog();
 
     int countBlog();
+
+    List<SearchItem> getSearchBlog(String query, int pageNum, int pageSize);
 }

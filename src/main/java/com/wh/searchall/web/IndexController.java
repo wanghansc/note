@@ -9,6 +9,7 @@ import com.wh.searchall.pojo.Type;
 import com.wh.searchall.service.BlogService;
 import com.wh.searchall.service.TagService;
 import com.wh.searchall.service.TypeService;
+import com.wh.searchall.utils.SearchItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -89,5 +90,29 @@ public class IndexController {
         list.add(allRecommendBlog.get(2));
         model.addAttribute("newblogs", list);
         return "_fragments :: newblogList";
+    }
+
+    @PostMapping("/search")
+    public String search(@RequestParam(required = false,defaultValue = "1",value = "pageNum")int pageNum,
+                         @RequestParam String query, Model model){
+
+        PageHelper.startPage(pageNum, 8);
+        List<SearchItem> searchBlog = blogService.getSearchBlog(query,  pageNum-1,  100);
+        PageInfo pageInfo = new PageInfo(searchBlog);
+        model.addAttribute("pageInfo", pageInfo);
+        model.addAttribute("query", query);
+        return "search";
+    }
+
+    @GetMapping("/search")
+    public String getSearch(@RequestParam(required = false,defaultValue = "1",value = "pageNum")int pageNum,
+                         @RequestParam String query, Model model){
+
+        PageHelper.startPage(pageNum, 8);
+        List<SearchItem> searchBlog = blogService.getSearchBlog(query,  pageNum-1,  100);
+        PageInfo pageInfo = new PageInfo(searchBlog);
+        model.addAttribute("pageInfo", pageInfo);
+        model.addAttribute("query", query);
+        return "search";
     }
 }

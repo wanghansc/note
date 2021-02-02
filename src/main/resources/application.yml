@@ -3,5 +3,15 @@ spring:
     mode: HTML
   profiles:
     active: dev
+  data:
+    solr:
+      host: http://127.0.0.1:8983/solr
+      core1: test
+      core2: test3
+    filePath: C:\Users\wanghan\Desktop\file
+  servlet:
+    multipart:
+      max-file-size: 524288000     # 文件上传大小限制为500MB
+      max-request-size: 524288000  # 请求大小限制为500MB
 
 comment.avatar: /images/avatar.png

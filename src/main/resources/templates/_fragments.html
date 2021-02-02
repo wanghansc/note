@@ -30,10 +30,14 @@
                                                              style="margin-right: 2em;margin-bottom: 4px"></i>关于我</a>
             <div class="right m-item m-mobile-hide item">
                 <!--                transparent透明，inverted 反转-->
-                <div class="ui icon inverted transparent input">
-                    <input type="text" placeholder="Search...">
-                    <i class="search link icon"></i>
-                </div>
+                <form name="search" action="#" method="post" th:action="@{/search}" target="_blank">
+                    <div class="ui icon inverted transparent input">
+                        <input type="text" name="query" placeholder="Search...." th:value="${query}">
+                        <i onclick="document.forms['search'].submit()" class="search link icon"></i>
+                    </div>
+
+                </form>
+
             </div>
         </div>
     </div>
