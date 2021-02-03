@@ -23,12 +23,12 @@ public class FileDownLoadController {
     @Value("${spring.data.filePath}")
     private String path;
 
-    @GetMapping("/file/{fileName}/download")
+    @GetMapping("/file/download/{fileName}")
     public void download(HttpServletResponse response, @PathVariable String fileName) throws UnsupportedEncodingException {
         String fileContentType = FileServiceImpl.getFileContentType(fileName);
         response.setContentType(fileContentType+";charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
-        response.setHeader("Content-Disposition", "attachment;fileName=" + java.net.URLEncoder.encode(fileName,"UTF-8"));
+        response.setHeader("Content-Disposition", "inline;fileName=" + java.net.URLEncoder.encode(fileName,"UTF-8"));
         java.io.File file = new java.io.File(path+java.io.File.separator+fileName);
         OutputStream os = null;
         try {

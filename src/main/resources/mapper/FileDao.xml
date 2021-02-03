@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wh.searchall.dao.FileDao">
     <insert id="addFile" parameterType="com.wh.searchall.pojo.File" useGeneratedKeys="true" keyProperty="id">
-        insert into t_file (`fileName`,`filePath`,`userId`,`nickname`) values (#{fileName},#{filePath},#{userId},#{nickname});
+        insert into t_file (`fileName`,`filePath`,`userId`,`nickname`,`upload`) values (#{fileName},#{filePath},#{userId},#{nickname},now());
     </insert>
 
     <select id="getAllType" resultType="com.wh.searchall.pojo.File">

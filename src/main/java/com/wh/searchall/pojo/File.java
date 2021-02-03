@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Date;
+
 /**
  * @author wanghan
  * @description TODO
@@ -20,4 +22,5 @@ public class File {
     private String filePath;
     private Long userId;
     private String nickname;
+    private Date upload;
 }
