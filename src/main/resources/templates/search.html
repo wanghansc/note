@@ -50,7 +50,7 @@
                 <div class="ui padded vertical segment m-padded-tb-large" th:each="blog : ${pageInfo.list}">
                     <div class="ui middle aligned mobile reversed stackable grid">
                         <div class="eleven wide column">
-                            <h3 class="ui header" ><a href="#" th:href="@{/{xx}/{id}(xx=${blog.path}!=null and ${blog.path}!='' ? 'file/download':'blog',id=${blog.blog_title})}" target="_blank" class="m-black" th:text="${blog.blog_title}">你真的理解什么是财富自由吗?</a></h3>
+                            <h3 class="ui header" ><a href="#" th:href="@{/{xx}/{id}(xx=${blog.path}!=null and ${blog.path}!='' ? 'file/download':'blog',id=${blog.path}!=null and ${blog.path}!='' ? ${blog.blog_title}:${blog.id})}" target="_blank" class="m-black" th:text="${blog.blog_title}">你真的理解什么是财富自由吗?</a></h3>
                             <div class="typo  typo-selection js-toc-content" th:each="h:${blog.highLight}">
                                 <span class="m-text" th:utext="|${h}|">正确做好任何一件事情的前提是清晰、正确的理解目标。而事实是，我们很多人很多时候根本没有对目标正确的定义，甚至根本从来就没有想过，只是大家都那么做而已...</span>
                             </div>
@@ -76,7 +76,7 @@
                         </div>
 
                         <div class="five wide column">
-                            <a href="#" th:href="@{/{xx}/{id}(xx=${blog.path}!=null and ${blog.path}!='' ? 'file/download':'blog',id=${blog.blog_title})}" target="_blank">
+                            <a href="#" th:href="@{/{xx}/{id}(xx=${blog.path}!=null and ${blog.path}!='' ? 'file/download':'blog',id=${blog.path}!=null and ${blog.path}!='' ? ${blog.blog_title}:${blog.id})}" target="_blank">
                                 <img src="https://unsplash.it/800/450?image=1005" th:src="@{${blog.blog_first_picture}!=null and ${blog.blog_first_picture}!='' ? ${blog.blog_first_picture}:'https://unsplash.it/800/450?image=1005'}"  alt="" class="ui rounded image">
                             </a>
                         </div>
